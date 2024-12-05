@@ -19,9 +19,13 @@ const Page = ()=>{
         if(!FirstnameValue) setisFirstNameEmpty(true)
             else setisFirstNameEmpty(false)
         if(!LastnameValue) setisLastnameEmpty(true)
+          else setisLastnameEmpty(false)
         if(!UsernameValue) setisUserNameEmpty(true)
+          else setisUserNameEmpty(false)
         if(!EmailValue) setisEmailEmpty(true)
+          else setisEmailEmpty(false)
         if(!PasswordValue) setisPasswordEmpty(true)
+          else setisPasswordEmpty(false)
     }
 
     const handleSignUp = ()=>{

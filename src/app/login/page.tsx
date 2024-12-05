@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 
 const page = ()=>{
 return (
-  <Card>
+  <Card className="text-center">
     <CardHeader>
       <CardTitle>Instagram</CardTitle>
     </CardHeader>
@@ -22,8 +22,8 @@ return (
       <Input />
     </CardContent>
     <Button>Log in</Button>
-    <CardFooter>
-      <a href="http://localhost:3000/signup">Sign up</a>
+    <CardFooter className="flex justify-center">
+      <a href="http://localhost:3000/signup" >Sign up</a>
     </CardFooter>
   </Card>
 );
