@@ -27,7 +27,6 @@ const Page = ()=>{
         if(!PasswordValue) setisPasswordEmpty(true)
           else setisPasswordEmpty(false)
     }
-
     const handleSignUp = ()=>{
         checkEmptyFields()
     }

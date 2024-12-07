@@ -1,4 +1,5 @@
-import { useState } from "react"
+"use client"
+import { useEffect, useState } from "react"
 
 const Page = ()=>{
     type commentsType = {
@@ -19,13 +20,24 @@ const Page = ()=>{
       userId: string;
       comments: commentsType;
       likedUsers: likedUsersTypes;
-    };
-    const [post,setPost] = useState<postType>([])
+    }[];
+    const [posts,setPost] = useState<postType>([])
     const getData = async ()=>{
-        const response = fetch("")
+      console.log("working")
+        const response = await fetch("https://instagram-service-xt7j.onrender.com/post/posts")
+        console.log(response)
+        const parsedPosts = await response.json();
+        setPost(parsedPosts)
     }
-    return(
-        <div></div>
-    )
+    useEffect(()=>{
+      getData()
+    },[])
+    return (
+      <div>
+        {posts?.map((post,index) => {
+          return <div key={index}>{post.title}</div>;
+        })}
+      </div>
+    );
 }
 export default Page
