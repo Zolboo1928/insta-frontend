@@ -1,7 +1,12 @@
 "use client"
 import { useEffect, useState } from "react"
+import { Card, CardHeader } from "../components/ui/card";
 
 const Page = ()=>{
+  type userType = {
+    userName: string;
+    profileImage: string;
+  };
     type commentsType = {
       _id: string;
       comment: string;
@@ -17,7 +22,7 @@ const Page = ()=>{
       _id: string;
       title: string;
       postedUserImage: string;
-      userId: string;
+      userId: userType;
       comments: commentsType;
       likedUsers: likedUsersTypes;
     }[];
@@ -35,7 +40,21 @@ const Page = ()=>{
     return (
       <div>
         {posts?.map((post,index) => {
-          return <div key={index}>{post.title}</div>;
+          return (
+            <Card key={index}>
+              <div className="flex gap-2 font-semibold items-center">
+                <img
+                  src={post.userId.profileImage}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className=" rounded-[50%] object-fill"
+                />
+                <p>{post.userId.userName}</p>
+              </div>
+              
+            </Card>
+          );
         })}
       </div>
     );
