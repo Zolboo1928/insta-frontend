@@ -1,8 +1,11 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Card, CardHeader } from "../components/ui/card";
+import { MessageCircle } from 'lucide-react';
+import { Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Page = ()=>{
+  const router = useRouter();
   type userType = {
     userName: string;
     profileImage: string;
@@ -21,39 +24,61 @@ const Page = ()=>{
     type postType = {
       _id: string;
       title: string;
-      postedUserImage: string;
+      postImage: string;
       userId: userType;
-      comments: commentsType;
-      likedUsers: likedUsersTypes;
+      comments: commentsType[];
+      likedUsers: likedUsersTypes[];
     }[];
     const [posts,setPost] = useState<postType>([])
     const getData = async ()=>{
       console.log("working")
         const response = await fetch("https://instagram-service-xt7j.onrender.com/post/posts")
-        console.log(response)
         const parsedPosts = await response.json();
         setPost(parsedPosts)
     }
     useEffect(()=>{
       getData()
     },[])
+    console.log(posts)
+
+    const redirectToComments = (id: string)=>{
+      router.push(`comments/${id}`)
+    }
+
     return (
       <div>
         {posts?.map((post,index) => {
           return (
-            <Card key={index}>
-              <div className="flex gap-2 font-semibold items-center">
+            <div key={index} className="border-0 mb-[22px]">
+              <div className="flex gap-2 font-semibold items-center ml-[16px]">
                 <img
-                  src={post.userId.profileImage}
+                  src={post?.userId.profileImage}
                   alt=""
                   width={32}
                   height={32}
-                  className=" rounded-[50%] object-fill"
+                  className=" rounded-[50%] object-cover"
                 />
                 <p>{post.userId.userName}</p>
               </div>
-              
-            </Card>
+              <img
+                src={post?.postImage}
+                alt=""
+                width={468}
+                height={517}
+                className=" object-cover mt-[14px]"
+              />
+              <div className="ml-[16px] ">
+                <div className="flex gap-4 my-3">
+                  <Heart />
+                  <MessageCircle onClick={() => redirectToComments(post._id)} />
+                </div>
+                <p className=" font-semibold">{post.likedUsers.length} likes</p>
+                <div className="space-x-2">
+                  <span className="font-semibold">{post.userId.userName}</span>
+                  <span>{post.title}</span>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
