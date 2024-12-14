@@ -22,12 +22,15 @@ const Page = ()=>{
       "https://instagram-service-xt7j.onrender.com/user/login",
       {
         method:"POST",
+        headers: {
+          'content-type': "application/json"
+        },
         body: JSON.stringify(loginUser),
       }
     );
-    console.log(response)
-    const data = await JSON.stringify(response)
-    console.log(data, 'json')
+    const data = await response.json()
+    const token = data.loginToken
+    console.log(token)
   }
 return (
   <Card className="text-center">
