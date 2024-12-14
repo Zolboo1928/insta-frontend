@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/app/components/ui/button";
 import {
   Card,
@@ -7,25 +8,49 @@ import {
   CardTitle,
 } from "@/app/components/ui/card"
 import { Input } from "@/app/components/ui/input";
+import { useState } from "react";
 
-const page = ()=>{
+const Page = ()=>{
+  const [emailValue, setEmailValue] = useState<string>("")
+  const [passwordValue , setPasswordValue] = useState<string>("")
+  const loginUser = {
+    email:emailValue,
+    password: passwordValue
+  }
+  const handleLogin = async()=>{
+    const response = await fetch(
+      "https://instagram-service-xt7j.onrender.com/user/login",
+      {
+        method:"POST",
+        body: JSON.stringify(loginUser),
+      }
+    );
+    console.log(response)
+    const data = await JSON.stringify(response)
+    console.log(data, 'json')
+  }
 return (
   <Card className="text-center">
     <CardHeader>
       <CardTitle>Instagram</CardTitle>
     </CardHeader>
     <CardContent>
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      <Input />
+      <Input
+        placeholder="email"
+        value={emailValue}
+        onChange={(e) => setEmailValue(e.target.value)}
+      />
+      <Input
+        placeholder="password"
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
+      />
     </CardContent>
-    <Button>Log in</Button>
+    <Button onClick={handleLogin}>Log in</Button>
     <CardFooter className="flex justify-center">
-      <a href="http://localhost:3000/signup" >Sign up</a>
+      <p>Sign up</p>
     </CardFooter>
   </Card>
 );
 }
-export default page
+export default Page

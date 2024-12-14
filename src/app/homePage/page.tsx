@@ -31,8 +31,11 @@ const Page = ()=>{
     }[];
     const [posts,setPost] = useState<postType>([])
     const getData = async ()=>{
-      console.log("working")
-        const response = await fetch("https://instagram-service-xt7j.onrender.com/post/posts")
+        const response = await fetch("https://instagram-service-xt7j.onrender.com/post/posts",{
+          headers:{
+            
+          }
+        })
         const parsedPosts = await response.json();
         setPost(parsedPosts)
     }

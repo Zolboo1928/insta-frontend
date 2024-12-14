@@ -91,10 +91,9 @@ const Page = ()=>{
           </Button>
           <div className="text-xs">
             Have an account?
-            <a href="http://localhost:3000/login" className="underline">
-              {" "}
+            <p >
               Login
-            </a>
+            </p>
           </div>
         </CardFooter>
       </Card>

@@ -16,7 +16,8 @@ const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
   useEffect(()=>{
     getPostById()
   },[])
-  return <div>comments{postId}</div>;
+  console.log(post)
+  return( <div>comments{postId}</div>)
 };
 
 export default Page;
