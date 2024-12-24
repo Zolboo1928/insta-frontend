@@ -2,67 +2,50 @@
 import { Button } from "@/app/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/components/ui/card"
 import { Input } from "@/app/components/ui/input"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const Page = ()=>{
-    const [FirstnameValue , setFirstnameValue] = useState<string>("")
-    const [LastnameValue , setLastnameValue] = useState<string>("")
-    const [UsernameValue , setUsernameValue] = useState<string>("")
+  const router = useRouter()
+    const [ProfilePicValue , setProfilePicValue] = useState<string>("")
     const [EmailValue , setEmailValue] = useState<string>("")
     const [PasswordValue , setPasswordValue] = useState<string>("")
-    const [isFirstNameEmpty , setisFirstNameEmpty] = useState<boolean>(false)
-    const [isLastnameEmpty , setisLastnameEmpty] = useState<boolean>(false)
-    const [isUserNameEmpty , setisUserNameEmpty] = useState<boolean>(false)
-    const [isEmailEmpty , setisEmailEmpty] = useState<boolean>(false)
-    const [isPasswordEmpty , setisPasswordEmpty] = useState<boolean>(false)
-    const checkEmptyFields = ()=>{
-        if(!FirstnameValue) setisFirstNameEmpty(true)
-            else setisFirstNameEmpty(false)
-        if(!LastnameValue) setisLastnameEmpty(true)
-          else setisLastnameEmpty(false)
-        if(!UsernameValue) setisUserNameEmpty(true)
-          else setisUserNameEmpty(false)
-        if(!EmailValue) setisEmailEmpty(true)
-          else setisEmailEmpty(false)
-        if(!PasswordValue) setisPasswordEmpty(true)
-          else setisPasswordEmpty(false)
+    const [userNameValue, setuserNameValue] = useState<string>("");
+    const handleSignUp = async()=>{
+        const newUser = {
+          userName:userNameValue,
+          password: PasswordValue,
+          email: EmailValue,
+          profileImage:ProfilePicValue
+        };
+        console.log(newUser)
+        const response = await fetch("https://instagram-service-xt7j.onrender.com/user/signup",{
+          method:"POST",
+          headers:{
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify(newUser)
+        });
+        const data = await response.json()
+        const token = data.tokenSignUp;
+        if(token){
+          window.localStorage.setItem("authorization", token);
+          router.push("/homePage")
+        }
     }
-    const handleSignUp = ()=>{
-        checkEmptyFields()
+    const redirectToLogin = ()=>{
+      router.push("/login")
     }
     return (
       <Card className="m-[20px]  ">
-        <CardHeader className="text-center">Instagram</CardHeader>
+        <CardHeader className="text-center font-bold">Instagram</CardHeader>
         <CardContent className="space-y-[10px]">
           <div>
             <Input
-              placeholder="Firstname"
-              value={FirstnameValue}
-              onChange={(e) => setFirstnameValue(e.target.value)}
-            />
-            {isFirstNameEmpty && (
-              <div className="text-red-500 text-xs ml-[5px] mt-[3px]">*Required</div>
-            )}
-          </div>
-          <div>
-            <Input
-              placeholder="Lastname"
-              value={LastnameValue}
-              onChange={(e) => setLastnameValue(e.target.value)}
-            />
-            {isLastnameEmpty && (
-              <div className="text-red-500 text-xs ml-[5px] mt-[3px]">*Required</div>
-            )}
-          </div>
-          <div>
-            <Input
               placeholder="Username"
-              value={UsernameValue}
-              onChange={(e) => setUsernameValue(e.target.value)}
+              value={userNameValue}
+              onChange={(e) => setuserNameValue(e.target.value)}
             />
-            {isUserNameEmpty && (
-              <div className="text-red-500 text-xs ml-[5px] mt-[3px]">*Required</div>
-            )}
           </div>
           <div>
             <Input
@@ -70,9 +53,6 @@ const Page = ()=>{
               value={EmailValue}
               onChange={(e) => setEmailValue(e.target.value)}
             />
-            {isEmailEmpty && (
-              <div className="text-red-500 text-xs ml-[5px] mt-[3px]">*Required</div>
-            )}
           </div>
           <div>
             <Input
@@ -80,20 +60,22 @@ const Page = ()=>{
               value={PasswordValue}
               onChange={(e) => setPasswordValue(e.target.value)}
             />
-            {isPasswordEmpty && (
-              <div className="text-red-500 text-xs ml-[5px] mt-[3px]">*Required</div>
-            )}
+          </div>
+          <div>
+            <Input
+              placeholder="Profile picture url"
+              value={ProfilePicValue}
+              onChange={(e) => setProfilePicValue(e.target.value)}
+            />
           </div>
         </CardContent>
         <CardFooter className="flex-col justify-center gap-[7px]">
           <Button className="w-full" onClick={handleSignUp}>
             Sign up
           </Button>
-          <div className="text-xs">
+          <div className="text-sm flex gap-1 items-center">
             Have an account?
-            <p >
-              Login
-            </p>
+            <p onClick={redirectToLogin} className=" font-bold text-sm">Login</p>
           </div>
         </CardFooter>
       </Card>

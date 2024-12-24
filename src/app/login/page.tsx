@@ -5,12 +5,13 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/app/components/ui/card"
 import { Input } from "@/app/components/ui/input";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Page = ()=>{
+  const router = useRouter()
   const [emailValue, setEmailValue] = useState<string>("")
   const [passwordValue , setPasswordValue] = useState<string>("")
   const loginUser = {
@@ -30,28 +31,39 @@ const Page = ()=>{
     );
     const data = await response.json()
     const token = data.loginToken
-    console.log(token)
+    if(token){
+      window.localStorage.setItem("authorization",token);
+      router.push("/homePage")
+    } 
   }
+   const redirectToSignUp = () => {
+     router.push("/signup");
+   };
 return (
-  <Card className="text-center">
-    <CardHeader>
-      <CardTitle>Instagram</CardTitle>
-    </CardHeader>
+  <Card className="text-center m-[20px] ">
+    <CardHeader className="font-bold">Instagram </CardHeader>
     <CardContent>
-      <Input
-        placeholder="email"
-        value={emailValue}
-        onChange={(e) => setEmailValue(e.target.value)}
-      />
-      <Input
-        placeholder="password"
-        value={passwordValue}
-        onChange={(e) => setPasswordValue(e.target.value)}
-      />
+      <div className="space-y-3">
+        <Input
+          placeholder="email"
+          value={emailValue}
+          onChange={(e) => setEmailValue(e.target.value)}
+        />
+        <Input
+          placeholder="password"
+          value={passwordValue}
+          onChange={(e) => setPasswordValue(e.target.value)}
+        />
+      </div>
     </CardContent>
     <Button onClick={handleLogin}>Log in</Button>
     <CardFooter className="flex justify-center">
-      <p>Sign up</p>
+      <div className="flex gap-1 text-sm mt-4">
+        <p>Don`t have an account?</p>
+        <p className="font-bold" onClick={redirectToSignUp}>
+          Sign up
+        </p>
+      </div>
     </CardFooter>
   </Card>
 );
