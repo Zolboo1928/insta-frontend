@@ -18,7 +18,6 @@ const Page = ()=>{
           email: EmailValue,
           profileImage:ProfilePicValue
         };
-        console.log(newUser)
         const response = await fetch("https://instagram-service-xt7j.onrender.com/user/signup",{
           method:"POST",
           headers:{

@@ -1,4 +1,4 @@
-type userType = {
+ export type userType = {
     profileImage: string;
     userName: string;
 }

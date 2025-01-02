@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { PostHeader } from "../custom_components/PostHeader";
 import { PostContent } from "../custom_components/PostContent";
 import { PostActions } from "../custom_components/PostActions";
+import { HomeOptions } from "../custom_components/HomeOptions";
 
      export type postType = {
        _id: string;
@@ -11,7 +12,7 @@ import { PostActions } from "../custom_components/PostActions";
        postImages: string[];
        userId: userType;
        comments: commentsType[];
-       likedUsers: likedUsersTypes[];
+       likedUsers: string[];
        createdAt: string;
      };
 
@@ -25,14 +26,9 @@ import { PostActions } from "../custom_components/PostActions";
          userId: string;
          commentedPostId: string;
        };
-       type likedUsersTypes = {
-         userName: string;
-         profileImage: string;
-         _id: string;
-       };
 
 const Page = ()=>{
-  const token = window.localStorage.getItem("authorization")
+  const token = localStorage.getItem("authorization")
 
   const router = useRouter();
 
@@ -53,7 +49,6 @@ const Page = ()=>{
     useEffect(()=>{
       getData()
     },[])
-    console.log(posts)
 
     const redirectToComments = (id: string)=>{
       router.push(`comments/${id}`)
@@ -61,7 +56,6 @@ const Page = ()=>{
   if (!token) {
     return <div>Login Or Sign up</div>;
   }
-  console.log(posts)
     return (
       <div className="pt-5">
         {posts?.map((post,index) => {
@@ -70,12 +64,15 @@ const Page = ()=>{
               <PostHeader user={post.userId} />
               <PostContent Images={post.postImages} />
               <PostActions
+                getData={getData}
+                token={token}
                 post={post}
                 redirectToComments={redirectToComments}
               />
             </div>
           );
         })}
+        <HomeOptions token={token}/>
       </div>
     );
 }
