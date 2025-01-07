@@ -1,7 +1,14 @@
+import { postType } from "../homePage/page";
+
  export type userType = {
-    profileImage: string;
-    userName: string;
-}
+   userName: string;
+   password: string;
+   email: string;
+   profileImage: string;
+   posts: postType[];
+   following: string[];
+   followers: string[];
+ };
 export const PostHeader = ({user}: {user: userType})=>{
     return (
       <>

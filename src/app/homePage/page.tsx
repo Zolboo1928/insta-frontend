@@ -1,10 +1,9 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
-import { PostHeader } from "../custom_components/PostHeader";
+import { PostHeader, userType } from "../custom_components/PostHeader";
 import { PostContent } from "../custom_components/PostContent";
 import { PostActions } from "../custom_components/PostActions";
-import { HomeOptions } from "../custom_components/HomeOptions";
 
      export type postType = {
        _id: string;
@@ -16,15 +15,18 @@ import { HomeOptions } from "../custom_components/HomeOptions";
        createdAt: string;
      };
 
-     type userType = {
-         userName: string;
-         profileImage: string;
-       };
+
+
        type commentsType = {
          _id: string;
          comment: string;
          userId: string;
          commentedPostId: string;
+       };
+       export type likedUserType = {
+         userName: string;
+         email: string;
+         profileImage: string;
        };
 
 const Page = ()=>{
@@ -32,7 +34,7 @@ const Page = ()=>{
 
   const router = useRouter();
 
-    const [posts,setPost] = useState<postType[]>([])
+    const [posts,setPosts] = useState<postType[]>([])
     const getData = async ()=>{
         const response = await fetch(
           "https://instagram-service-xt7j.onrender.com/post/posts",
@@ -44,7 +46,7 @@ const Page = ()=>{
           }
         );
         const parsedPosts = await response.json();
-        setPost(parsedPosts)
+        setPosts(parsedPosts)
     }
     useEffect(()=>{
       getData()
@@ -57,8 +59,8 @@ const Page = ()=>{
     return <div>Login Or Sign up</div>;
   }
     return (
-      <div className="pt-5">
-        {posts?.map((post,index) => {
+      <div className="pt-5 pb-10">
+        {posts?.map((post, index) => {
           return (
             <div key={index} className="border-0 mb-[22px]">
               <PostHeader user={post.userId} />
@@ -72,7 +74,6 @@ const Page = ()=>{
             </div>
           );
         })}
-        <HomeOptions token={token}/>
       </div>
     );
 }

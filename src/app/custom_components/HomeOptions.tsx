@@ -1,11 +1,13 @@
+"use client"
 import { jwtDecode } from "jwt-decode";
 import { House } from "lucide-react";
 import { SquarePlus } from "lucide-react";
 import { decodedType } from "./AddComment";
 import { useRouter } from "next/navigation";
-export const HomeOptions = ({token}:{token:string}) => {
+export const HomeOptions = () => {
+   const token = localStorage.getItem("authorization");
     const router = useRouter()
-    const decoded : decodedType= jwtDecode(token)
+    const decoded : decodedType= jwtDecode(token || "")
     const redirectToHome = ()=>{
         router.push("/homePage")
     }
