@@ -3,7 +3,7 @@ import { userType } from "./PostHeader"
 export const UserSection = ({user}:{user:userType|null})=>{
     return (
       <>
-        <div className="flex my-4">
+        <div className="flex my-4 items-center">
           <img
             src={user?.profileImage}
             alt=""
@@ -13,7 +13,7 @@ export const UserSection = ({user}:{user:userType|null})=>{
           />
           <div>
             <p className="text-[20px] font-semibold">{user?.userName}</p>
-            <button>Following</button>
+            <p>{user?.email}</p>
           </div>
         </div>
       </>

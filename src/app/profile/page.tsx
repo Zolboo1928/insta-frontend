@@ -10,6 +10,7 @@ import { ProfilePosts } from "../custom_components/ProfilePosts";
 import { postType } from "../homePage/page";
 
 const Page = ()=>{
+  const [isloading,setIsLoading] = useState(true)
     const [user,setUser] = useState<userType | null>(null)
     const [posts, setPosts] = useState<postType[] | null>(null)
    const token = localStorage.getItem("authorization");
@@ -26,6 +27,7 @@ const Page = ()=>{
             body: JSON.stringify({ userId: decoded._id }),
           }
         );
+        if(response) setIsLoading(false)
         const data = await response.json()
         setUser(data)
     }
@@ -47,7 +49,13 @@ const Page = ()=>{
         getUser()
         getPostsOfUser()
     },[])
-    console.log(posts)
+     if (!token) {
+       return <div>Login Or Sign up</div>;
+     } else if( isloading){
+      return(
+        <div className="text-center mt-[100%] ">Loading...</div>
+      )
+     }
     return (
       <>
         <ProfileHeader user={user} />
@@ -57,7 +65,6 @@ const Page = ()=>{
         <Followers user={user} />
         <hr />
         <ProfilePosts
-          user={user}
           posts={posts}
         />
       </>

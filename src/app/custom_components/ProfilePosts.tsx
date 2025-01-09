@@ -1,21 +1,24 @@
+/* eslint-disable @next/next/no-img-element */
 import { Grid3x3 } from "lucide-react";
-import { userType } from "./PostHeader";
 import { postType } from "../homePage/page";
-export const ProfilePosts = ({user,posts}:{user:userType|null,posts:postType[]|null}) => {
+import { useRouter } from "next/navigation";
+export const ProfilePosts = ({posts}:{posts:postType[]|null}) => {
+  const router = useRouter()
+  const redirectToPost = (postId:string)=>{
+    router.push(`/post/${postId}`)
+  }
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center border-b-2">
         <Grid3x3 className="my-2" />
       </div>
-      <div className="flex justify-evenly">
+      <div className="flex gap-1 mx-1">
         {posts?.map((post,index)=>{
             return (
-              <div key={index} >
+              <div key={index} className="w-1/3" onClick={()=>redirectToPost(post._id)}>
                 <img
                   src={post.postImages[0]}
-                  className="object-fill"
-                  width={127}
-                  height={127}
+                  className="w-full aspect-square object-cover"
                   alt=""
                 />
               </div>

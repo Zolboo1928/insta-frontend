@@ -4,14 +4,14 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
-export const PostContent = ({ Images }: { Images: string[] }) => {
+export const PostContent = ({ Images }: { Images: string[]|undefined }) => {
   return (
     <>
       <Carousel className="mt-4">
         <CarouselContent>
-          {Images.map((image, index) => {
+          {Images?.map((image, index) => {
             return (
-              <CarouselItem key={index} className="w-[390px] h-[487px] object-cover ">
+              <CarouselItem key={index} className=" ">
                 <img src={image} alt="" />
               </CarouselItem>
             );

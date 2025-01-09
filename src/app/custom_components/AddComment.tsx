@@ -3,8 +3,6 @@ import { useState } from "react";
 
 export type decodedType = {
   _id: string;
-  iat: number;
-  exp: number;
   userName: string;
   profileImage: string
 };
@@ -39,7 +37,7 @@ export const AddComment = ({ postId, getCommentsByPostId }:{postId:string,getCom
   };
   return (
     <>
-      <div className="fixed bottom-0 left-0 flex gap-3 border-t-2 w-full p-4 bg-white">
+      <div className="fixed bottom-12 left-0 flex gap-3 border-t-2 w-full p-4 bg-white">
         <input
           type="text"
           className=" focus:outline-none w-full"
@@ -47,9 +45,9 @@ export const AddComment = ({ postId, getCommentsByPostId }:{postId:string,getCom
           value={inputValue}
           onChange={(e) => setinputValue(e.target.value)}
         />
-        <button className=" text-blue-500 hover:text-black" onClick={handleComment}>
+        <p className=" text-blue-500 hover:text-black" onClick={handleComment}>
           Post
-        </button>
+        </p>
       </div>
     </>
   );

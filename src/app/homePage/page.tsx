@@ -23,11 +23,7 @@ import { PostActions } from "../custom_components/PostActions";
          userId: string;
          commentedPostId: string;
        };
-       export type likedUserType = {
-         userName: string;
-         email: string;
-         profileImage: string;
-       };
+
 
 const Page = ()=>{
   const token = localStorage.getItem("authorization")
@@ -35,6 +31,7 @@ const Page = ()=>{
   const router = useRouter();
 
     const [posts,setPosts] = useState<postType[]>([])
+    const [isloading,setIsLoading] = useState(true)
     const getData = async ()=>{
         const response = await fetch(
           "https://instagram-service-xt7j.onrender.com/post/posts",
@@ -45,6 +42,7 @@ const Page = ()=>{
             },
           }
         );
+        if(response) setIsLoading(false)
         const parsedPosts = await response.json();
         setPosts(parsedPosts)
     }
@@ -57,6 +55,8 @@ const Page = ()=>{
     }
   if (!token) {
     return <div>Login Or Sign up</div>;
+  } else if(isloading){
+    return <div className="text-center mt-[100%] ">Loading...</div>;
   }
     return (
       <div className="pt-5 pb-10">

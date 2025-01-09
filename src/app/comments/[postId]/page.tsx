@@ -1,6 +1,8 @@
 "use client";
 import { AddComment } from "@/app/custom_components/AddComment";
-import {  OneComment } from "@/app/custom_components/OneComment";
+import { OneComment } from "@/app/custom_components/OneComment";
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
 export type commentsType = {
@@ -15,35 +17,45 @@ type userIdType = {
   profileImage: string;
 };
 const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
-  const token = window.localStorage.getItem("authorization")
+  const router = useRouter();
+  const token = window.localStorage.getItem("authorization");
   const { postId } = use(params);
-  const [comments, setComments] = useState<commentsType[]>([])
-  const [isloading,setIsLoading] = useState<boolean>(true)
-  const getCommentsByPostId = async ()=>{
+  const [comments, setComments] = useState<commentsType[]>([]);
+  const [isloading, setIsLoading] = useState<boolean>(true);
+  const getCommentsByPostId = async () => {
     const response = await fetch(
       `https://instagram-service-xt7j.onrender.com/post/getPostById/${postId}`,
       {
         headers: {
           authorization: `Bearer ${token}`,
-          "Content-Type":"application/json"
+          "Content-Type": "application/json",
         },
       }
     );
-    if(response){
-      setIsLoading(false)
+    if (response) {
+      setIsLoading(false);
     }
-    const parsedPost = await response.json()
+    const parsedPost = await response.json();
     const allcomments = parsedPost.comments;
-      setComments(allcomments);
-  }
-  useEffect(()=>{
-    getCommentsByPostId()
-  },[])
-
+    setComments(allcomments);
+  };
+  useEffect(() => {
+    getCommentsByPostId();
+  }, []);
+  const redirectToHomePage = () => {
+    router.push("/homePage");
+  };
   return (
-    <div className="p-5 pb-[150px] space-y-4">
+    <div className="p-5 pb-[120px] space-y-4 mt-6 ">
+      <div
+        className="flex justify-center  h-11 items-center font-bold top-0 fixed bg-white border-b-2 w-full left-0"
+        onClick={redirectToHomePage}
+      >
+        <ChevronLeft className="left-4 absolute" />
+        <p>Comments</p>
+      </div>
       {isloading ? (
-        <p>Loading</p>
+        <div className="text-center  ">Loading...</div>
       ) : (
         comments.length === 0 && (
           <div className="flex-col text-center ">
