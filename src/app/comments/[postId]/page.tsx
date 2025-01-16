@@ -24,8 +24,9 @@ const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
   const [isloading, setIsLoading] = useState<boolean>(true);
   const getCommentsByPostId = async () => {
     const response = await fetch(
-      `https://instagram-service-xt7j.onrender.com/post/getPostById/${postId}`,
+      `https://instagram-service-xt7j.onrender.com/post/getCommentsOfPost/${postId}`,
       {
+        method:"GET",
         headers: {
           authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -42,14 +43,16 @@ const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
   useEffect(() => {
     getCommentsByPostId();
   }, []);
-  const redirectToHomePage = () => {
-    router.push("/homePage");
+  const redirectToPrevPage = () => {
+   const prevPage =  localStorage.getItem("prevPage")
+    router.push(prevPage||"");
   };
+  console.log("comments", comments)
   return (
     <div className="p-5 pb-[120px] space-y-4 mt-6 ">
       <div
         className="flex justify-center  h-11 items-center font-bold top-0 fixed bg-white border-b-2 w-full left-0"
-        onClick={redirectToHomePage}
+        onClick={redirectToPrevPage}
       >
         <ChevronLeft className="left-4 absolute" />
         <p>Comments</p>

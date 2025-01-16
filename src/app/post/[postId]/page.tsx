@@ -39,7 +39,11 @@ const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
    const redirectToProfile = () => {
      router.push("/profile");
    };
-
+  if (!token) {
+    return <div>Login Or Sign up</div>;
+  } else if (isloading) {
+    return <div className="text-center mt-[100%] ">Loading...</div>;
+  }
   return (
     <div className="border-0 mb-[22px] pt-[60px] pb-12">
       <div
@@ -52,6 +56,7 @@ const Page = ({ params }: { params: Promise<{ postId: string }> }) => {
       <PostHeader user={post?.userId} />
       <PostContent Images={post?.postImages} />
       <PostActions
+      prevPage={`/post/${postId}`}
         getData={getPostById}
         token={token || ""}
         post={post}

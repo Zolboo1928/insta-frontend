@@ -10,7 +10,7 @@ import { postType } from "../homePage/page";
    following: string[];
    followers: string[];
  };
-export const PostHeader = ({user}: {user: userType|undefined})=>{
+export const PostHeader = ({user,followings}: {user: userType|undefined,followings:userType[]|undefined})=>{
     return (
       <>
         <div className="flex gap-2 font-semibold items-center ml-[16px]">
@@ -22,6 +22,7 @@ export const PostHeader = ({user}: {user: userType|undefined})=>{
             className=" rounded-[50%] object-cover aspect-square"
           />
           <p>{user?.userName}</p>
+          {followings?.includes(user?._id) ? <p>following</p> : <p>follow</p>}
         </div>
       </>
     );

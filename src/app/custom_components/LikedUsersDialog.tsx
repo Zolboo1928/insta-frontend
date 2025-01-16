@@ -38,6 +38,7 @@ export const LikedUsersDialog = ({
         }),
       }
     );
+    console.log(res)
     getLikedUsersOfPost()
   };
   const handlefollow = async (userId: string) => {
@@ -55,9 +56,10 @@ export const LikedUsersDialog = ({
         }),
       }
     );
+        console.log(res);
+
     getLikedUsersOfPost()
   };
-  console.log(decoded);
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -69,7 +71,7 @@ export const LikedUsersDialog = ({
             <div className="text-center  ">Loading...</div>
           ) : likedUsers.length === 0 ? (
             <div className="flex-col text-center ">
-              <p className="font-bold text-2xl ">No likes yet</p>
+              <p className="font-bold text-2xl ">No liked yet</p>
               <p>Chance to like the post first</p>
             </div>
           ) : (

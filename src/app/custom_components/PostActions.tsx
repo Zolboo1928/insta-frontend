@@ -1,5 +1,5 @@
 import { Heart, MessageCircle } from "lucide-react";
-import {  postType } from "../homePage/page";
+import { postType } from "../homePage/page";
 import { jwtDecode } from "jwt-decode";
 import { decodedType } from "./AddComment";
 import { LikedUsersDialog } from "./LikedUsersDialog";
@@ -7,19 +7,21 @@ import { useState } from "react";
 import { userType } from "./PostHeader";
 
 export const PostActions = ({
+  prevPage,
   getData,
   post,
   redirectToComments,
   token,
 }: {
+  prevPage: string
   getData: () => void;
   token: string;
-  post: postType|undefined
+  post: postType | undefined;
   redirectToComments: (id: string) => void;
 }) => {
   const [likedUsers, setlikedUsers] = useState<userType[]>([]);
-  const [open, setOpen] = useState(false)
-  const [isloading,setIsLoading] = useState(true)
+  const [open, setOpen] = useState(false);
+  const [isloading, setIsLoading] = useState(true);
   const decoded: decodedType = jwtDecode(token || "");
   const likeInfo = {
     likedUser: decoded._id,
@@ -43,6 +45,7 @@ export const PostActions = ({
         body: JSON.stringify(likeInfo),
       }
     );
+    console.log(response);
     getData();
   };
 
@@ -58,10 +61,12 @@ export const PostActions = ({
         body: JSON.stringify(dislikeInfo),
       }
     );
+    console.log(response);
+
     getData();
   };
 
-  const handleLikedUsersDialog = () => setOpen(!open)
+  const handleLikedUsersDialog = () => setOpen(!open);
 
   const getLikedUsersOfPost = async () => {
     const response = await fetch(
@@ -75,7 +80,7 @@ export const PostActions = ({
         body: JSON.stringify({ postId: post?._id }),
       }
     );
-    if(response) setIsLoading(false)
+    if (response) setIsLoading(false);
     const data = await response.json();
     setlikedUsers(data.likedUsers);
   };
@@ -98,11 +103,16 @@ export const PostActions = ({
             fill={post?.likedUsers.includes(decoded._id) ? "red" : "white"}
             color={post?.likedUsers.includes(decoded._id) ? "red" : "black"}
             onClick={
-              post?.likedUsers.includes(decoded._id) ? handleDislike : handleLike
+              post?.likedUsers.includes(decoded._id)
+                ? handleDislike
+                : handleLike
             }
           />
           <MessageCircle
-            onClick={() => redirectToComments(post?._id||"")}
+            onClick={() => {
+              localStorage.setItem("prevPage",prevPage)
+              redirectToComments(post?._id || "");
+            }}
             className={`hover:cursor-pointer`}
           />
         </div>
@@ -123,7 +133,10 @@ export const PostActions = ({
         {post?.comments.length != 0 && (
           <p
             className=" text-slate-500 hover:cursor-pointer"
-            onClick={() => redirectToComments(post?._id||"")}
+            onClick={() => {
+              localStorage.setItem("prevPage", prevPage);
+              redirectToComments(post?._id || "");
+            }}
           >
             View all {post?.comments.length} comments
           </p>
